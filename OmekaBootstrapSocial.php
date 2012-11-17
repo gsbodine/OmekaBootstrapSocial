@@ -53,8 +53,8 @@ class OmekaBootstrapSocial extends Omeka_Plugin_Abstract {
                 <div class="span1">
                     <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="trebuchet ms"></div>
                 </div>
-                <div class="span1"
-                    <a href="http://pinterest.com/pin/create/button/?url=<?php echo urlencode(abs_item_uri()) ?>&media=<?php echo urlencode(abs_item_uri()) ?>&description=<?php echo urlencode($itemDescription); ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+                <div class="span1">
+                     <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim(abs_item_uri()) ?>&media=<?php echo trim($this->_getImageLink(get_current_item())); ?>&description=<?php item('Dublin Core','Description') ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                 </div>
             </div>
         <?php
@@ -62,7 +62,6 @@ class OmekaBootstrapSocial extends Omeka_Plugin_Abstract {
     
     public function hookPublicThemeFooter() {
         ?>
-        <script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];
@@ -71,7 +70,22 @@ class OmekaBootstrapSocial extends Omeka_Plugin_Abstract {
           js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
+        
+        <script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+        
         <?php 
+    }
+    
+    private function _getImageLink($item) {
+        $fileNum = 0;
+        while(loop_files_for_item($item)) { 
+            $file = get_current_file();
+            if ($fileNum == 0) {
+                $fileURL =  file_display_uri($file);
+            }
+            $fileNum++;
+        }
+        return $fileURL;
     }
     
 }
