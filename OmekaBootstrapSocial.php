@@ -11,9 +11,7 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-require_once 'Omeka/Plugin/Abstract.php';
-
-class OmekaBootstrapSocial extends Omeka_Plugin_Abstract {
+class OmekaBootstrapSocial extends Omeka_Plugin_AbstractPlugin {
     
     protected $_hooks = array(
         'config_form',
