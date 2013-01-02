@@ -5,9 +5,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-require_once 'OmekaBootstrapSocial.php';
+require_once 'OmekaBootstrapSocialPlugin.php';
 
-$obsocial = new OmekaBootstrapSocial;
+$obsocial = new OmekaBootstrapSocialPlugin;
 $obsocial->setUp();
 
 

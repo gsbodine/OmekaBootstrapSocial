@@ -11,21 +11,25 @@
  * @author Garrick S. Bodine <garrick.bodine@gmail.com>
  */
 
-class OmekaBootstrapSocial extends Omeka_Plugin_AbstractPlugin {
+class OmekaBootstrapSocialPlugin extends Omeka_Plugin_AbstractPlugin {
     
     protected $_hooks = array(
-        'config_form',
-        'public_append_to_items_show',
-        'public_theme_footer'
+        //'config_form',
+        'public_items_show',
+        'public_footer'
         
     );
+    
+    public function setUp() {
+        parent::setUp();
+    }
     
     public function hookConfigForm() {
         // TODO: allow configuration of which plugins... split them out into diff functions instead of all in single appendToItems function
     }
     
-    public function hookPublicAppendToItemsShow() {
-        $item = get_current_item();
+    public function hookPublicItemsShow() {
+        $item = get_current_record('item');
         ?>
         <div class="row">
                 <div class="span6">
@@ -48,17 +52,17 @@ class OmekaBootstrapSocial extends Omeka_Plugin_AbstractPlugin {
                       })();
                     </script>
                 </div>
-                <div class="span1">
-                    <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="trebuchet ms"></div>
+                <div class="span1"><div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="trebuchet ms"></div>
+                
                 </div>
                 <div class="span1">
-                     <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim(abs_item_uri()) ?>&media=<?php echo trim($this->_getImageLink(get_current_item())); ?>&description=<?php item('Dublin Core','Description') ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+                     <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim(record_url($item, 'show', true)) ?>&media=<?php echo trim($this->_getImageLink($item)); ?>&description=<?php metadata('item',array('Dublin Core','Description')) ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                 </div>
             </div>
         <?php
     }
     
-    public function hookPublicThemeFooter() {
+    public function hookPublicFooter() {
         ?>
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
@@ -75,14 +79,7 @@ class OmekaBootstrapSocial extends Omeka_Plugin_AbstractPlugin {
     }
     
     private function _getImageLink($item) {
-        $fileNum = 0;
-        while(loop_files_for_item($item)) { 
-            $file = get_current_file();
-            if ($fileNum == 0) {
-                $fileURL =  file_display_uri($file);
-            }
-            $fileNum++;
-        }
+        $fileURL = item_image('fullsize',$item);
         return $fileURL;
     }
     
