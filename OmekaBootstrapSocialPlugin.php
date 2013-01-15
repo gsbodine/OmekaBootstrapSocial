@@ -52,19 +52,21 @@ class OmekaBootstrapSocialPlugin extends Omeka_Plugin_AbstractPlugin {
                       })();
                     </script>
                 </div>
-                <div class="span1"><div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="trebuchet ms"></div>
-                
-                </div>
                 <div class="span1">
-                     <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim(record_url($item, 'show', true)) ?>&media=<?php echo trim($this->_getImageLink($item)); ?>&description=<?php metadata('item',array('Dublin Core','Description')) ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+                     <a href="http://pinterest.com/pin/create/button/?url=<?php echo trim(record_url($item, 'show', true)) ?>&media=<?php echo trim($this->_getImageLink($item)); ?>&description=<?php metadata('item',array('Dublin Core','Title')) ?>" class="pin-it-button" count-layout="horizontal"><img src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                 </div>
+                <div class="span2">
+                    <div id="fb-root"></div>
+                    <div class="fb-like" data-href="<?php echo trim(record_url($item, 'show', true)) ?>" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+                </div>
+                
             </div>
         <?php
     }
     
     public function hookPublicFooter() {
         ?>
-        <div id="fb-root"></div>
+        
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];
           if (d.getElementById(id)) return;
@@ -79,7 +81,8 @@ class OmekaBootstrapSocialPlugin extends Omeka_Plugin_AbstractPlugin {
     }
     
     private function _getImageLink($item) {
-        $fileURL = item_image('fullsize',$item);
+        $aFiles = $item->getFiles();
+        $fileURL = file_display_url($aFiles[0]);
         return $fileURL;
     }
     
