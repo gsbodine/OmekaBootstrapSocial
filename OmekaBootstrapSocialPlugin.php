@@ -34,7 +34,7 @@ class OmekaBootstrapSocialPlugin extends Omeka_Plugin_AbstractPlugin {
         <div class="row">
                 <div class="span6">
                     <hr />
-                     <h4><i class="icon-thumbs-up icon-large"></i> Share!</h4>
+                     <h4><i class="icon-thumbs-up"></i> Share!</h4>
                 </div>
             </div>
             <div class="row">
